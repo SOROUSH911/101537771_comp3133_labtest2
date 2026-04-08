@@ -1,0 +1,8 @@
+{
+  "buildCommand": "npx ng build --configuration production",
+  "outputDirectory": "dist/spacex-mission-control/browser",
+  "framework": null,
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/index.html" }
+  ]
+}
