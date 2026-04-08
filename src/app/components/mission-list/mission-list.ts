@@ -113,6 +113,12 @@ export class MissionList implements OnInit {
     return launch.success ? 'badge-success' : 'badge-fail';
   }
 
+  getRocketName(launch: Launch): string {
+    const rockets = this.spacex.rockets();
+    const r = rockets.find(r => r.id === launch.rocket);
+    return r ? `${r.name} (${r.type})` : '';
+  }
+
   getStatusText(launch: Launch): string {
     if (launch.upcoming) return 'UPCOMING';
     return launch.success ? 'SUCCESS' : 'FAILED';

@@ -90,13 +90,21 @@
       <div class="missions-scroll">
         @for (launch of filteredLaunches(); track launch.id) {
           <div class="mission-card" (click)="openLaunch(launch)" (mouseenter)="onHoverMission(launch)">
-            @if (launch.links.patch.small) {
-              <img [src]="launch.links.patch.small" [alt]="launch.name">
-            } @else {
-              <div class="patch-placeholder">#{{ launch.flight_number }}</div>
+            <div class="card-top">
+              @if (launch.links.patch.small) {
+                <img [src]="launch.links.patch.small" [alt]="launch.name">
+              } @else {
+                <div class="patch-placeholder">#{{ launch.flight_number }}</div>
+              }
+              <div class="card-info">
+                <div class="mission-name">{{ launch.name }}</div>
+                <div class="mission-meta">#{{ launch.flight_number }} | {{ launch.date_utc | date:'yyyy' }}</div>
+                <div class="mission-rocket">{{ getRocketName(launch) }}</div>
+              </div>
+            </div>
+            @if (launch.details) {
+              <div class="mission-details">{{ launch.details | slice:0:80 }}...</div>
             }
-            <div class="mission-name">{{ launch.name }}</div>
-            <div class="mission-date">{{ launch.date_utc | timeAgo }}</div>
             <span class="mission-badge" [ngClass]="getStatusClass(launch)">
               {{ getStatusText(launch) }}
             </span>
