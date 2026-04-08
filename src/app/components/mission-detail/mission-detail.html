@@ -1,0 +1,135 @@
+<!-- Back button -->
+<button class="back-btn" (click)="goBack()">← BACK TO MISSIONS</button>
+<button class="narrate-btn" (click)="toggleNarration()" [class.disabled]="!tts.enabled()">
+  {{ tts.enabled() ? 'NARRATION ON' : 'NARRATION OFF' }}
+</button>
+
+@if (loading()) {
+  <div class="loading">LOADING MISSION DATA...</div>
+} @else if (launch(); as l) {
+  <div class="detail-panel">
+    <!-- Header -->
+    <div class="detail-header">
+      @if (l.links.patch.large) {
+        <img class="detail-patch" [src]="l.links.patch.large" [alt]="l.name">
+      }
+      <div class="detail-title-area">
+        <h1 class="detail-title">{{ l.name }}</h1>
+        <div class="detail-meta">
+          <span>Flight #{{ l.flight_number }}</span>
+          <span>{{ l.date_utc | date:'fullDate' }}</span>
+        </div>
+        <span class="status-badge" [class.success]="l.success === true" [class.fail]="l.success === false" [class.upcoming]="l.upcoming">
+          @if (l.upcoming) { UPCOMING }
+          @else if (l.success) { SUCCESS }
+          @else { FAILED }
+        </span>
+      </div>
+    </div>
+
+    <!-- Details -->
+    @if (l.details) {
+      <div class="detail-section">
+        <h3>Mission Details</h3>
+        <p class="detail-text">{{ l.details }}</p>
+      </div>
+    }
+
+    <!-- Rocket Info -->
+    @if (rocket(); as r) {
+      <div class="detail-section">
+        <h3>Rocket: {{ r.name }}</h3>
+        <div class="specs-grid">
+          <div class="spec">
+            <span class="spec-label">Height</span>
+            <span class="spec-val">{{ r.height.meters }}m</span>
+          </div>
+          <div class="spec">
+            <span class="spec-label">Diameter</span>
+            <span class="spec-val">{{ r.diameter.meters }}m</span>
+          </div>
+          <div class="spec">
+            <span class="spec-label">Mass</span>
+            <span class="spec-val">{{ r.mass.kg | number }}kg</span>
+          </div>
+          <div class="spec">
+            <span class="spec-label">Engines</span>
+            <span class="spec-val">{{ r.engines.number }}x {{ r.engines.type }}</span>
+          </div>
+          <div class="spec">
+            <span class="spec-label">Cost/Launch</span>
+            <span class="spec-val">${{ r.cost_per_launch | number }}</span>
+          </div>
+          <div class="spec">
+            <span class="spec-label">Success Rate</span>
+            <span class="spec-val">{{ r.success_rate_pct }}%</span>
+          </div>
+        </div>
+        <p class="detail-text">{{ r.description }}</p>
+      </div>
+    }
+
+    <!-- Core Details -->
+    @if (l.cores.length > 0) {
+      <div class="detail-section">
+        <h3>Core Details</h3>
+        @for (core of l.cores; track $index) {
+          <div class="core-info">
+            @switch (true) {
+              @case (core.reused) {
+                <span class="core-badge reused">REUSED (Flight #{{ core.flight }})</span>
+              }
+              @default {
+                <span class="core-badge new">NEW BOOSTER</span>
+              }
+            }
+            @if (core.landing_success !== null) {
+              <span class="core-badge" [class.landed]="core.landing_success" [class.lost]="!core.landing_success">
+                {{ core.landing_success ? 'LANDED' : 'LANDING FAILED' }}
+                @if (core.landing_type) { ({{ core.landing_type }}) }
+              </span>
+            }
+          </div>
+        }
+      </div>
+    }
+
+    <!-- Failures -->
+    @if (l.failures.length > 0) {
+      <div class="detail-section failure-section">
+        <h3>Failure Details</h3>
+        @for (f of l.failures; track $index) {
+          <p class="failure-text">T+{{ f.time }}s — {{ f.reason }}</p>
+        }
+      </div>
+    }
+
+    <!-- Links -->
+    <div class="detail-section links-section">
+      <h3>Links</h3>
+      <div class="links-row">
+        @if (l.links.webcast) {
+          <a class="link-btn" [href]="l.links.webcast" target="_blank">Watch Launch</a>
+        }
+        @if (l.links.article) {
+          <a class="link-btn" [href]="l.links.article" target="_blank">Article</a>
+        }
+        @if (l.links.wikipedia) {
+          <a class="link-btn" [href]="l.links.wikipedia" target="_blank">Wikipedia</a>
+        }
+      </div>
+    </div>
+
+    <!-- Flickr Images -->
+    @if (l.links.flickr.original.length > 0) {
+      <div class="detail-section">
+        <h3>Launch Photos</h3>
+        <div class="flickr-gallery">
+          @for (img of l.links.flickr.original; track $index) {
+            <img class="flickr-img" [src]="img" alt="Launch photo">
+          }
+        </div>
+      </div>
+    }
+  </div>
+}

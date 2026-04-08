@@ -1,0 +1,128 @@
+.hud { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 10; pointer-events: none; transition: opacity 0.8s ease; }
+.hud.cinematic-hidden { opacity: 0; pointer-events: none !important; }
+
+/* Subtle scan lines */
+.scanlines { position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+  background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,255,255,0.015) 2px, rgba(0,255,255,0.015) 4px);
+  pointer-events: none; z-index: 100; }
+
+/* ─── HEADER ─── */
+.header { pointer-events: auto; position: absolute; top: 0; left: 0; right: 0; height: 70px; display: flex; align-items: center;
+  justify-content: space-between; padding: 0 30px;
+  background: linear-gradient(180deg, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.3) 80%, transparent 100%);
+  border-bottom: 1px solid rgba(0,255,255,0.15); }
+
+.logo-area { display: flex; align-items: center; gap: 15px; }
+.logo-area h1 { font-family: 'Orbitron', sans-serif; font-size: 20px; font-weight: 700; letter-spacing: 4px;
+  background: linear-gradient(90deg, #00e5ff, #ffffff, #00e5ff); background-size: 200% auto;
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; animation: shimmer 3s linear infinite; }
+@keyframes shimmer { 0% { background-position: 0% center; } 100% { background-position: 200% center; } }
+
+.status-dot { width: 8px; height: 8px; background: #00ff88; border-radius: 50%;
+  animation: pulse-dot 2s ease-in-out infinite; box-shadow: 0 0 10px #00ff88; }
+@keyframes pulse-dot { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+
+.search-area { display: flex; align-items: center; gap: 12px; }
+.search-box { background: rgba(0,255,255,0.05); border: 1px solid rgba(0,255,255,0.3); border-radius: 4px;
+  padding: 8px 16px; color: #00e5ff; font-family: 'Roboto Mono', monospace; font-size: 13px; width: 250px; outline: none; transition: all 0.3s; }
+.search-box::placeholder { color: rgba(0,229,255,0.3); }
+.search-box:focus { border-color: #00e5ff; box-shadow: 0 0 15px rgba(0,229,255,0.2); background: rgba(0,255,255,0.1); }
+
+.filter-btn { background: rgba(0,255,255,0.05); border: 1px solid rgba(0,255,255,0.25); border-radius: 4px;
+  padding: 8px 14px; color: #00e5ff; font-family: 'Roboto Mono', monospace; font-size: 12px; cursor: pointer; transition: all 0.3s; }
+.filter-btn:hover { background: rgba(0,255,255,0.15); border-color: #00e5ff; }
+.filter-btn.active { background: rgba(0,255,255,0.2); border-color: #00e5ff; box-shadow: 0 0 10px rgba(0,229,255,0.3); }
+
+/* ─── STATS PANEL (LEFT) ─── */
+.stats-panel { pointer-events: auto; position: absolute; top: 90px; left: 20px; width: 220px;
+  background: rgba(0,10,20,0.7); border: 1px solid rgba(0,255,255,0.12); border-radius: 8px;
+  padding: 20px; display: flex; flex-direction: column; gap: 18px; }
+.stats-panel::before { content: ''; position: absolute; top: -1px; left: 20px; right: 20px; height: 2px;
+  background: linear-gradient(90deg, transparent, #00e5ff, transparent); }
+.stat-item { display: flex; flex-direction: column; gap: 4px; }
+.stat-label { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: rgba(0,229,255,0.6); }
+.stat-value { font-family: 'Orbitron', sans-serif; font-size: 28px; font-weight: 700; color: #fff;
+  text-shadow: 0 0 20px rgba(0,229,255,0.4); }
+.stat-bar { height: 3px; background: rgba(0,255,255,0.1); border-radius: 2px; overflow: hidden; margin-top: 4px; }
+.stat-bar-fill { height: 100%; border-radius: 2px; background: linear-gradient(90deg, #00e5ff, #00ff88);
+  animation: fillBar 2s ease-out forwards; }
+@keyframes fillBar { from { width: 0; } }
+
+/* ─── ROCKET PANEL (RIGHT) ─── */
+.rocket-panel { pointer-events: auto; position: absolute; top: 90px; right: 20px; width: 260px;
+  background: rgba(0,10,20,0.7); border: 1px solid rgba(0,255,255,0.12); border-radius: 8px; padding: 20px; }
+.rocket-panel::before { content: ''; position: absolute; top: -1px; left: 20px; right: 20px; height: 2px;
+  background: linear-gradient(90deg, transparent, #ff6b35, transparent); }
+.rocket-title { font-family: 'Orbitron', sans-serif; font-size: 16px; font-weight: 700; color: #fff;
+  margin-bottom: 12px; letter-spacing: 2px; }
+.rocket-img { width: 100%; height: 140px; object-fit: cover; border-radius: 6px;
+  border: 1px solid rgba(0,255,255,0.15); margin-bottom: 14px; }
+.spec-row { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 12px; }
+.spec-row .label { color: rgba(255,255,255,0.5); }
+.spec-row .value { color: #00e5ff; font-weight: 500; }
+
+/* ─── CORNER DECORATIONS ─── */
+.corner-tl, .corner-tr, .corner-bl, .corner-br { position: absolute; width: 30px; height: 30px; pointer-events: none; }
+.corner-tl { top: 75px; left: 5px; border-top: 2px solid rgba(0,229,255,0.3); border-left: 2px solid rgba(0,229,255,0.3); }
+.corner-tr { top: 75px; right: 5px; border-top: 2px solid rgba(0,229,255,0.3); border-right: 2px solid rgba(0,229,255,0.3); }
+.corner-bl { bottom: 245px; left: 5px; border-bottom: 2px solid rgba(0,229,255,0.3); border-left: 2px solid rgba(0,229,255,0.3); }
+.corner-br { bottom: 245px; right: 5px; border-bottom: 2px solid rgba(0,229,255,0.3); border-right: 2px solid rgba(0,229,255,0.3); }
+
+/* ─── CROSSHAIR ─── */
+.crosshair { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+  width: 40px; height: 40px; pointer-events: none; opacity: 0.15; }
+.crosshair::before, .crosshair::after { content: ''; position: absolute; background: #00e5ff; }
+.crosshair::before { top: 50%; left: 0; width: 100%; height: 1px; transform: translateY(-50%); }
+.crosshair::after { left: 50%; top: 0; width: 1px; height: 100%; transform: translateX(-50%); }
+
+/* ─── MISSION CARDS STRIP (BOTTOM) ─── */
+.missions-strip { pointer-events: auto; position: absolute; bottom: 0; left: 0; right: 0; height: 240px;
+  background: linear-gradient(0deg, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.6) 70%, transparent 100%);
+  padding: 15px 30px 30px; display: flex; flex-direction: column; gap: 8px; }
+.missions-label { font-family: 'Orbitron', sans-serif; font-size: 11px; letter-spacing: 3px;
+  color: rgba(0,229,255,0.5); text-transform: uppercase; }
+.missions-count { color: rgba(0,229,255,0.3); }
+
+.missions-scroll { display: flex; gap: 14px; overflow-x: auto; padding-bottom: 10px; scroll-behavior: smooth; }
+.missions-scroll::-webkit-scrollbar { height: 4px; }
+.missions-scroll::-webkit-scrollbar-track { background: rgba(0,255,255,0.05); border-radius: 2px; }
+.missions-scroll::-webkit-scrollbar-thumb { background: rgba(0,229,255,0.3); border-radius: 2px; }
+
+.mission-card { flex-shrink: 0; width: 140px; background: rgba(0,15,30,0.8);
+  border: 1px solid rgba(0,255,255,0.1); border-radius: 8px; padding: 12px 12px 10px; cursor: pointer;
+  transition: all 0.3s; position: relative; overflow: hidden; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.mission-card:hover { border-color: rgba(0,229,255,0.4); transform: translateY(-4px);
+  box-shadow: 0 8px 30px rgba(0,229,255,0.15); }
+.mission-card img { width: 60px; height: 60px; object-fit: contain; display: block; margin: 0 auto 8px;
+  filter: drop-shadow(0 0 8px rgba(0,229,255,0.3)); }
+.patch-placeholder { width: 60px; height: 60px; display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 8px; border-radius: 50%; background: rgba(0,255,255,0.08);
+  border: 1px solid rgba(0,255,255,0.2); font-family: 'Orbitron', sans-serif; font-size: 12px; color: #00e5ff; }
+.mission-name { font-size: 11px; font-weight: 500; text-align: center; color: #fff; margin-bottom: 4px;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.mission-date { font-size: 9px; text-align: center; color: rgba(255,255,255,0.4); margin-bottom: 6px; }
+.mission-badge { display: block; margin: 0 auto; padding: 2px 10px; border-radius: 10px; font-size: 9px;
+  font-weight: 500; text-align: center; width: fit-content; letter-spacing: 1px; }
+.badge-success { background: rgba(0,255,136,0.15); color: #00ff88; border: 1px solid rgba(0,255,136,0.3); }
+.badge-fail { background: rgba(255,68,68,0.15); color: #ff4444; border: 1px solid rgba(255,68,68,0.3); }
+.badge-upcoming { background: rgba(255,200,0,0.15); color: #ffc800; border: 1px solid rgba(255,200,0,0.3); }
+
+.loading-text { font-family: 'Orbitron', sans-serif; font-size: 12px; letter-spacing: 4px; color: #00e5ff;
+  animation: blink 1.5s ease-in-out infinite; }
+@keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+.no-results { color: rgba(0,229,255,0.4); font-size: 12px; padding: 20px; }
+
+/* ─── API INDICATOR PILL ─── */
+.api-pill { display: inline-block; padding: 1px 6px; border-radius: 4px; font-size: 8px; font-weight: 700;
+  letter-spacing: 1px; background: rgba(255,0,100,0.25); color: #ff4488; border: 1px solid rgba(255,0,100,0.4);
+  margin-left: 6px; vertical-align: middle; animation: api-pulse 2s ease-in-out infinite; }
+@keyframes api-pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+
+/* ─── BOTTOM TICKER ─── */
+.ticker { position: absolute; bottom: 0; left: 0; right: 0; height: 24px;
+  background: rgba(0,0,0,0.9); border-top: 1px solid rgba(0,255,255,0.1);
+  overflow: hidden; display: flex; align-items: center; }
+.ticker-content { display: flex; white-space: nowrap; animation: ticker-scroll 30s linear infinite;
+  font-size: 11px; color: rgba(0,229,255,0.6); letter-spacing: 1px; }
+@keyframes ticker-scroll { 0% { transform: translateX(100vw); } 100% { transform: translateX(-100%); } }
+.ticker-sep { display: inline-block; width: 6px; height: 6px; background: #00e5ff; border-radius: 50%; margin: 0 20px; opacity: 0.4; }

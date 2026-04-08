@@ -1,0 +1,119 @@
+<!-- HUD Overlay — hidden during cinematic -->
+<div class="hud" [class.cinematic-hidden]="spacex.cinematicActive()">
+  <!-- Scan line effect -->
+  <div class="scanlines"></div>
+
+  <!-- Header -->
+  <div class="header">
+    <div class="logo-area">
+      <div class="status-dot"></div>
+      <h1>SPACEX MISSION CONTROL</h1>
+    </div>
+    <div class="search-area">
+      <input type="text" class="search-box" placeholder="Search missions..."
+        [ngModel]="searchQuery()" (ngModelChange)="onSearch($event)">
+      <button class="filter-btn" [class.active]="filterStatus() === 'all'" (click)="setFilter('all')">ALL</button>
+      <button class="filter-btn" [class.active]="filterStatus() === 'success'" (click)="setFilter('success')">SUCCESS</button>
+      <button class="filter-btn" [class.active]="filterStatus() === 'failed'" (click)="setFilter('failed')">FAILED</button>
+    </div>
+  </div>
+
+  <!-- Stats Panel (Left) -->
+  <div class="stats-panel">
+    <div class="stat-item">
+      <span class="stat-label">Total Launches <span class="api-pill">API</span></span>
+      <span class="stat-value">{{ stats().total }}</span>
+      <div class="stat-bar"><div class="stat-bar-fill" style="width: 100%"></div></div>
+    </div>
+    <div class="stat-item">
+      <span class="stat-label">Success Rate <span class="api-pill">API</span></span>
+      <span class="stat-value">{{ stats().rate }}%</span>
+      <div class="stat-bar"><div class="stat-bar-fill" style="width: 97%"></div></div>
+    </div>
+    <div class="stat-item">
+      <span class="stat-label">Successful</span>
+      <span class="stat-value">{{ stats().success }}</span>
+      <div class="stat-bar"><div class="stat-bar-fill" style="width: 85%"></div></div>
+    </div>
+    <div class="stat-item">
+      <span class="stat-label">Upcoming</span>
+      <span class="stat-value">{{ stats().upcoming }}</span>
+      <div class="stat-bar"><div class="stat-bar-fill" style="width: 72%"></div></div>
+    </div>
+  </div>
+
+  <!-- Rocket Panel (Right) -->
+  @if (selectedRocket(); as r) {
+    <div class="rocket-panel">
+      <div class="rocket-title">{{ r.name | uppercase }} <span class="api-pill">API</span></div>
+      @if (r.flickr_images.length > 0) {
+        <img class="rocket-img" [src]="r.flickr_images[0]" [alt]="r.name">
+      }
+      <div class="spec-row"><span class="label">Height</span><span class="value">{{ r.height.meters }} m</span></div>
+      <div class="spec-row"><span class="label">Diameter</span><span class="value">{{ r.diameter.meters }} m</span></div>
+      <div class="spec-row"><span class="label">Mass</span><span class="value">{{ r.mass.kg | number }} kg</span></div>
+      <div class="spec-row"><span class="label">Payload LEO</span><span class="value">{{ r.payload_weights[0]?.kg | number }} kg</span></div>
+      <div class="spec-row"><span class="label">Cost/Launch</span><span class="value">${{ r.cost_per_launch | number }}</span></div>
+      <div class="spec-row"><span class="label">Success Rate</span><span class="value" style="color:#00ff88">{{ r.success_rate_pct }}%</span></div>
+      <div class="spec-row"><span class="label">First Flight</span><span class="value">{{ r.first_flight }}</span></div>
+    </div>
+  }
+
+  <!-- Corner Decorations -->
+  <div class="corner-tl"></div>
+  <div class="corner-tr"></div>
+  <div class="corner-bl"></div>
+  <div class="corner-br"></div>
+
+  <!-- Crosshair -->
+  <div class="crosshair"></div>
+
+  <!-- Mission Cards Strip (Bottom) -->
+  <div class="missions-strip">
+    <div class="missions-label"><span class="api-pill">API</span>
+      @switch (filterStatus()) {
+        @case ('success') { SUCCESSFUL MISSIONS }
+        @case ('failed') { FAILED MISSIONS }
+        @case ('upcoming') { UPCOMING MISSIONS }
+        @default { RECENT MISSIONS }
+      }
+      <span class="missions-count">({{ filteredLaunches().length }})</span>
+    </div>
+    @if (spacex.loading()) {
+      <div class="loading-text">LOADING MISSION DATA...</div>
+    } @else {
+      <div class="missions-scroll">
+        @for (launch of filteredLaunches(); track launch.id) {
+          <div class="mission-card" (click)="openLaunch(launch)" (mouseenter)="onHoverMission(launch)">
+            @if (launch.links.patch.small) {
+              <img [src]="launch.links.patch.small" [alt]="launch.name">
+            } @else {
+              <div class="patch-placeholder">#{{ launch.flight_number }}</div>
+            }
+            <div class="mission-name">{{ launch.name }}</div>
+            <div class="mission-date">{{ launch.date_utc | timeAgo }}</div>
+            <span class="mission-badge" [ngClass]="getStatusClass(launch)">
+              {{ getStatusText(launch) }}
+            </span>
+          </div>
+        } @empty {
+          <div class="no-results">No missions found.</div>
+        }
+      </div>
+    }
+  </div>
+
+  <!-- Bottom Ticker -->
+  <div class="ticker">
+    <div class="ticker-content">
+      <span>NEXT LAUNCH: STARLINK GROUP 6-42 // T-04:22:15:00</span>
+      <span class="ticker-sep"></span>
+      <span>FALCON 9 B1081 // 12TH FLIGHT</span>
+      <span class="ticker-sep"></span>
+      <span>CAPE CANAVERAL SLC-40</span>
+      <span class="ticker-sep"></span>
+      <span>{{ stats().total }} MISSIONS COMPLETED // {{ stats().rate }}% SUCCESS RATE</span>
+      <span class="ticker-sep"></span>
+    </div>
+  </div>
+</div>
