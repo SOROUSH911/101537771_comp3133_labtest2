@@ -2,7 +2,7 @@ import { Component, ElementRef, AfterViewInit, OnDestroy, ViewChild, NgZone, eff
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
-import { SpacexService } from '../../services/spacex';
+import { SpacexApiService } from '../../network/spacexapi.service';
 
 @Component({
   selector: 'app-space-scene',
@@ -12,7 +12,7 @@ import { SpacexService } from '../../services/spacex';
 export class SpaceScene implements AfterViewInit, OnDestroy {
   @ViewChild('canvas', { static: true }) canvasRef!: ElementRef<HTMLCanvasElement>;
   private animationId = 0;
-  private spacex = inject(SpacexService);
+  private spacex = inject(SpacexApiService);
   private loadRocketFn: ((id: string) => void) | null = null;
   private zoomFn: ((zoom: boolean) => void) | null = null;
 

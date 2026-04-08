@@ -1,15 +1,17 @@
 import { Component, OnInit, OnDestroy, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { SpacexService } from '../../services/spacex';
+import { SpacexApiService } from '../../network/spacexapi.service';
 import { TtsService } from '../../services/tts.service';
 import { AudioService } from '../../services/audio.service';
 import { Launch } from '../../models/launch.model';
 import { Rocket } from '../../models/rocket.model';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-mission-detail',
-  imports: [CommonModule],
+  imports: [CommonModule, MatButtonModule, MatIconModule],
   templateUrl: './mission-detail.html',
   styleUrl: './mission-detail.css',
 })
@@ -21,7 +23,7 @@ export class MissionDetail implements OnInit, OnDestroy {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private spacex: SpacexService,
+    private spacex: SpacexApiService,
     public tts: TtsService,
     private audio: AudioService,
   ) {

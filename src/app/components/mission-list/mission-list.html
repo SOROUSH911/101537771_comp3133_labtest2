@@ -42,6 +42,11 @@
     </div>
   </div>
 
+  <!-- Mission Filter (Year) -->
+  <div class="year-filter-panel">
+    <app-missionfilter (yearSelected)="setYear($event)" />
+  </div>
+
   <!-- Rocket Panel (Right) -->
   @if (selectedRocket(); as r) {
     <div class="rocket-panel">

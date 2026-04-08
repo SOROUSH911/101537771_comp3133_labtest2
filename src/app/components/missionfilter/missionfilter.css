@@ -1,0 +1,4 @@
+.filter-panel { pointer-events: auto; }
+.filter-label { font-family: 'Orbitron', sans-serif; font-size: 10px; letter-spacing: 2px;
+  color: rgba(0,229,255,0.6); text-transform: uppercase; margin-bottom: 6px; }
+mat-chip { cursor: pointer; }

@@ -2,16 +2,20 @@ import { Component, OnInit, computed, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { SpacexService } from '../../services/spacex';
+import { SpacexApiService } from '../../network/spacexapi.service';
 import { TtsService } from '../../services/tts.service';
 import { Launch } from '../../models/launch.model';
 import { Rocket } from '../../models/rocket.model';
 import { FilterStatus } from '../../models/filter.type';
 import { TimeAgoPipe } from '../../pipes/time-ago-pipe';
+import { Missionfilter } from '../missionfilter/missionfilter';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatBadgeModule } from '@angular/material/badge';
 
 @Component({
   selector: 'app-mission-list',
-  imports: [FormsModule, ReactiveFormsModule, CommonModule, TimeAgoPipe],
+  imports: [FormsModule, ReactiveFormsModule, CommonModule, TimeAgoPipe, Missionfilter, MatButtonModule, MatIconModule, MatBadgeModule],
   templateUrl: './mission-list.html',
   styleUrl: './mission-list.css',
 })
@@ -66,10 +70,10 @@ export class MissionList implements OnInit {
 
   selectedRocket = signal<Rocket | null>(null);
 
-  constructor(public spacex: SpacexService, private router: Router, private tts: TtsService) {}
+  constructor(public spacex: SpacexApiService, private router: Router, private tts: TtsService) {}
 
   ngOnInit() {
-    this.spacex.loadLaunches();
+    this.spacex.loadMissions();
     this.spacex.loadRockets();
     // Load Falcon 9 as default rocket panel
     this.spacex.getRocketById('5e9d0d95eda69973a809d1ec').subscribe({

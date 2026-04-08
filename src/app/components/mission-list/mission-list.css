@@ -61,6 +61,11 @@
 .spec-row .label { color: rgba(255,255,255,0.5); }
 .spec-row .value { color: #00e5ff; font-weight: 500; }
 
+/* ─── YEAR FILTER ─── */
+.year-filter-panel { pointer-events: auto; position: absolute; top: 90px; left: 260px;
+  background: rgba(0,10,20,0.7); border: 1px solid rgba(0,255,255,0.12); border-radius: 8px;
+  padding: 12px 16px; max-width: calc(100vw - 560px); overflow-x: auto; }
+
 /* ─── CORNER DECORATIONS ─── */
 .corner-tl, .corner-tr, .corner-bl, .corner-br { position: absolute; width: 30px; height: 30px; pointer-events: none; }
 .corner-tl { top: 75px; left: 5px; border-top: 2px solid rgba(0,229,255,0.3); border-left: 2px solid rgba(0,229,255,0.3); }

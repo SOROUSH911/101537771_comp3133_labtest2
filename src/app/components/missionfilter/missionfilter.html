@@ -1,0 +1,9 @@
+<div class="filter-panel">
+  <div class="filter-label">Launch Year</div>
+  <mat-chip-set>
+    <mat-chip (click)="selectYear('all')" [highlighted]="selectedYear() === 'all'">ALL</mat-chip>
+    @for (year of availableYears(); track year) {
+      <mat-chip (click)="selectYear(year)" [highlighted]="selectedYear() === year">{{ year }}</mat-chip>
+    }
+  </mat-chip-set>
+</div>
